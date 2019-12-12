@@ -60,7 +60,7 @@ download.file("https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6QCr7FTUBHvAp
 
 bp_fc <- read.csv("./raw-data/family_child_total_monthly_2000_2018.csv")
 
-bp_fc %>%
+bp_fc <- bp_fc %>%
   # this data is specifically for families and 
   # unaccompanied children 
   clean_names() %>%
@@ -85,7 +85,6 @@ ui <- navbarPage(
              sidebarPanel(
                selectInput("crime", "Select type of crime",
                            choices = c("Homicide" = "Homicide",
-                                       "Abduction" = "Abduction",
                                        "Extortion" = "Extortion",
                                        "Feminicide" = "Feminicide",
                                        "Hostage Situation" = "hostage_situation"),
@@ -138,11 +137,10 @@ ui <- navbarPage(
     sidebarLayout(
       sidebarPanel(
         # BELOW IS WHERE ERROR IS COMING FROM I THINK
-        selectInput("Apprehended Subjects", "Choose apprehensions of families, unaccompanied children, or in general",
-                    choices = c("Family Units" = "family_apprehensions",
-                                "Unaccompanied Children" = "children",
-                                "Total Apprehensions" = "total_apprehensions"),
-                    selected = "children"),
+        selectInput("apprehensions", "Choose apprehension subjects",
+                    choices = c("Unaccompanied Children",
+                                "Total Apprehensions",
+                                "Family Units")),
         h6("Source: Border Patrol and UMich data people")),
       # useful to remember: sidebar panel is closed by double parentheses after h6
       mainPanel(
@@ -221,17 +219,13 @@ server <- function(input, output) {
       map_cartel_data_1 <- crimes %>%
         filter(subtipo == "HOMICIDIO DOLOSO") }
     
-    else if(input$crime == "Abduction") {
-      map_cartel_data_1 <- crimes %>%
-        filter(tipo == "RAPTO") }
-    
     else if(input$crime == "Feminicide") {
       map_cartel_data_1 <- crimes %>%
         filter(subtipo == "FEMINICIDIO") }
     
     else if(input$crime == "Extortion") {
       map_cartel_data_1 <- crimes %>%
-        filter(subtipo == "EXTORSI√ìN") }
+        filter(subtipo == "EXTORSIÓN") }
     
     else {
       map_cartel_data_1 <- crimes %>%
@@ -263,7 +257,7 @@ server <- function(input, output) {
     
     
     map1 <- mxstate_choropleth(map_homicide_data_2019,
-                               title = "Total Homicides, by state")
+                               title = "Total by state")
     
     map1})
   
@@ -275,16 +269,7 @@ server <- function(input, output) {
     perception_data <- perception %>%
       filter(state == input$state)
     
-    plot_perception <- plot_ly(perception_data, x = ~year, y = ~percent, type = 'scatter', mode = 'lines')
-    # deleted pipe
-    # layout(title ="Percentage of citizens over 18 who feel unsafe in their state and country",
-    #      subtitle = "Over time, the drug war and its effects have brought the vast
-    #      majority of Mexicans, especially in the states most affected by cartel violence, to feel unsafe",
-    #      caption = "Data courtesy of Mexican government agency INEGI",
-    # yaxis = "percent of people who feel unsafe",
-    # xaxis = "state",
-    # theme(text = element_text(family = "Times New Roman", size = 14), panel.background = element_blank()),
-    # theme(legend.title=element_blank()))
+    plot_perception <- plot_ly(perception_data, x = ~year, y = ~percent, type = 'scatter', mode = 'lines', text = "Percentage of citizens over 18 who feel unsafe in their state and country", fillcolor = "firebrick")
     
     
     ggplotly(plot_perception)
@@ -298,15 +283,11 @@ server <- function(input, output) {
     
     # creating and defining apprehensions, what will be dependent variable in plotly:
     
-    
-    if(input$apprehensions == "total_apprehensions") {
-      apprehensions <- bp_fc$total_apprehensions }
-    
-    else if(input$apprehensions == "children") {
-      apprehensions <- bp_fc$unaccompanied_child_apprehension }
-    
-    else {
-      apprehensions <- bp_fc$family_apprehensions }
+    if(input$apprehensions == "Unaccompanied Children") {
+      bp_fc <- bp_fc %>% mutate(apprehensions = unaccompanied_child_apprehension) }
+    else if(input$apprehensions == "Total Apprehensions") {
+      bp_fc <- bp_fc %>% mutate(apprehensions = total_apprehensions) }
+    else { bp_fc <- bp_fc %>% mutate(apprehensions = family_apprehensions) }
     
     # making the actual plot here
     
