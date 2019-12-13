@@ -85,10 +85,13 @@ ui <- navbarPage(
              sidebarPanel(
                selectInput("crime", "Select type of crime",
                            choices = c("Homicide" = "Homicide",
-                                       "Extortion" = "Extortion",
+                                       "Human Trafficking" = "Human Trafficking",
+                                       "Sexual Trafficking of Children" = "Sexual Trafficking of Children",
+                                       "Assaults" = "Assaults",
                                        "Feminicide" = "Feminicide",
-                                       "Hostage Situation" = "hostage_situation"),
-                           selected = "Homicide"),
+                                       "Hostage Situation" = "hostage_situation",
+                                       "Extortion" = "Extortion"),
+                           selected = "Human Trafficking"),
                sliderInput("year", "Select year",
                            min = 2015, max = 2019, value = 2019, sep=""),
                helpText("Violence Over Time. Data From: CONAPO, Mexican government agency on
@@ -157,15 +160,26 @@ ui <- navbarPage(
 )
 
 # ------------------------------------------------- #
-#### fourth tab (about page) ####
-
+#### fourth tab (regression) ####
+# 
 #                tabPanel(
-#                    title = "About",
-#                    htmlOutput("about_me")
+#                    title = "Relationship Between Public Perceptions of Violence
+#                    and Attempts at Illegal Immigration",
+#                 mainPanel(
+#                     tabsetPanel(
+#                        tabPanel(
+#                          title = "Relationship Between Public Perceptions of Violence
+#                          and Attempts at Illegal Immigration",
+#                          plotlyOutput("plot_regression")
 #                        )
+# ggplotly regression, geompoint, method=lm
+# )))
 
 # i just finished going through and finding exactly
 # where i was missing a parentheses and that took so stupidly long im embarrassed.       
+
+
+#### fifth tab (about) ####
 
 
 # ------------------------------------------------- #
@@ -223,6 +237,18 @@ server <- function(input, output) {
       map_cartel_data_1 <- crimes %>%
         filter(subtipo == "FEMINICIDIO") }
     
+    else if(input$crime == "Sexual Trafficking of Children") {
+      map_cartel_data_1 <- crimes %>%
+        filter(subtipo == "CORRUPCIÓN DE MENORES") }
+    
+    else if(input$crime == "Assaults") {
+      map_cartel_data_1 <- crimes %>%
+        filter(subtipo == "LESIONES DOLOSAS") }
+    
+    else if (input$crime == "Human Trafficking") {
+      map_cartel_data_1 <- crimes %>%
+        filter(subtipo == "TRATA DE PERSONAS") }
+    
     else if(input$crime == "Extortion") {
       map_cartel_data_1 <- crimes %>%
         filter(subtipo == "EXTORSIÓN") }
@@ -269,7 +295,12 @@ server <- function(input, output) {
     perception_data <- perception %>%
       filter(state == input$state)
     
-    plot_perception <- plot_ly(perception_data, x = ~year, y = ~percent, type = 'scatter', mode = 'lines', text = "Percentage of citizens over 18 who feel unsafe in their state and country", fillcolor = "firebrick")
+    plot_perception <- plot_ly(perception_data, 
+                               x = ~year, 
+                               y = ~percent, 
+                               type = 'scatter', 
+                               mode = 'lines', 
+                               text = "Percentage of citizens over 18 who feel unsafe in their state and country")
     
     
     ggplotly(plot_perception)
@@ -302,8 +333,25 @@ server <- function(input, output) {
 
 
 # ------------------------------------------------- #           
-#### OUTPUT FOR INFO TAB ####
-
+#### OUTPUT FOR REGRESSION TAB ####
+# 
+# set.seed(955)
+# 
+# bp_fc_regression <- bp_fc %>%
+#   filter(month == "yearly total") %>%
+#   filter(sector == "southwest border") %>%
+#   select(unaccompanied_child_apprehension)
+# 
+# data_regression <- data.frame(year = unique(bp_fc$fiscal_year), 
+#                               x = bp_fc_regression,
+#                               y = homicides)
+# 
+# plot_regression <- ggplot(data_regression, aes(x=xvar, y=yvar)) +
+#   geom_point(shape=1) +    # Use hollow circles
+#   geom_smooth(method=lm)   # Add linear regression line
+# 
+# 
+# plot_regression <- ggplotly(plot_regression)
 
 
 
