@@ -42,8 +42,7 @@ dir_create("raw-data")
 download.file("https://data.diegovalle.net/elcrimen/nm-estatal-victimas.csv.gz",
               destfile = "./raw-data/nm-estatal-victimas-2.csv")
 
-crimes <- read.csv("./raw-data/nm-estatal-victimas-2.csv") %>%
-  clean_names()
+crimes <- read.csv("./raw-data/nm-estatal-victimas-2.csv") 
 
 # ------------------------------------------------- #
 
@@ -91,7 +90,7 @@ ui <- navbarPage(
                                        "Feminicide" = "Feminicide",
                                        "Hostage Situation" = "hostage_situation",
                                        "Extortion" = "Extortion"),
-                           selected = "Human Trafficking"),
+                           selected = "Homicide"),
                sliderInput("year", "Select year",
                            min = 2015, max = 2019, value = 2019, sep=""),
                helpText("Violence Over Time. Data From: CONAPO, Mexican government agency on
@@ -99,6 +98,10 @@ ui <- navbarPage(
                                   available compilation spreadsheet updated regularly with data by each state's
                                   government.")),
              mainPanel(
+               h2("Map of Violent Crimes in Mexico Over Time"),
+               h5("We can track trends in cartel wars and high-profile crimes
+               and their consequential effects on public perceptions of 
+                  insecurity; see next tab."),
                tabsetPanel(
                  tabPanel(
                    title = "Map of Violence Over Time",
@@ -110,7 +113,7 @@ ui <- navbarPage(
   # ------------------------------------------------- #
   #### second tab (perceptions of insecurity) ####
   tabPanel(
-    title = "Perceptions of Insecurity",
+    title = "Percentage of Mexican citizens over 18 who feel unsafe in their state",
     sidebarLayout(
       sidebarPanel(
         selectInput("state", "Choose a state",
@@ -123,11 +126,12 @@ ui <- navbarPage(
                                 "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", 
                                 "Tamaulipas", "Tlaxcala", "Veracruz de Ignacio de la Llave", 
                                 "Yucatán", "Zacatecas"),
-                    selected = "Ciudad de México"),
-        h6("Over time, the drug war and its effects have brought the vast majority of Mexicans, 
-        especially in the states most affected by violence, to feel unsafe. Data courtesy of INEGI.")),
+                    selected = "Ciudad de México")),
       mainPanel(
-        title = "Percentage of  citizens over 18 who feel unsafe in their state in Mexico",
+        h2("Public Perceptions of Insecurity in Mexico"),
+        h5("Over time, the drug war and its effects have brought the vast majority of Mexicans, 
+        especially those living in border states most affected by high-profile crimes, to 
+           feel unsafe."),
         plotlyOutput("plot_perception")),
       
     )
@@ -147,6 +151,7 @@ ui <- navbarPage(
         h6("Source: Border Patrol and UMich data people")),
       # useful to remember: sidebar panel is closed by double parentheses after h6
       mainPanel(
+        h2("Border Patrol Apprehensions on the Southwest U.S. Border by Year"),
         tabsetPanel(
           tabPanel(
             title = "Border Patrol Apprehensions",
@@ -155,32 +160,37 @@ ui <- navbarPage(
         )
       )
     )
+  ),
+  
+  
+  
+  # ------------------------------------------------- #
+  #### fourth tab (regression) ####
+  
+  tabPanel("Causal Relationship",
+           h3("Relationship Between Public Perceptions of Violence 
+                   and Attempts at Illegal Immigration"),
+           plotOutput(outputId = "plot_regression")
+  ),
+  
+  
+  
+  #### fifth tab (about) ####
+  
+  tabPanel("About",
+           h3("Camila Sanmiguel"),
+           h5("I am a Harvard undergraduate studying
+                            History & Literature, passionate about data science
+                            and Latin America."),
+           h5("Contact me at camilasanmiguel@college.harvard.edu or find me on my website", 
+              a("here.", href="https://www.camilasanmiguel.com")),
+           h5("Find me on LinkedIn",
+              a("here.", href="https://www.linkedin.com/u/camilasanmiguel"))
   )
+  
+  
   # this final parentheses is the navbar closing
-)
-
-# ------------------------------------------------- #
-#### fourth tab (regression) ####
-# 
-#                tabPanel(
-#                    title = "Relationship Between Public Perceptions of Violence
-#                    and Attempts at Illegal Immigration",
-#                 mainPanel(
-#                     tabsetPanel(
-#                        tabPanel(
-#                          title = "Relationship Between Public Perceptions of Violence
-#                          and Attempts at Illegal Immigration",
-#                          plotlyOutput("plot_regression")
-#                        )
-# ggplotly regression, geompoint, method=lm
-# )))
-
-# i just finished going through and finding exactly
-# where i was missing a parentheses and that took so stupidly long im embarrassed.       
-
-
-#### fifth tab (about) ####
-
+)                      
 
 # ------------------------------------------------- #
 #### MY SERVER ####
@@ -188,27 +198,27 @@ ui <- navbarPage(
 
 server <- function(input, output) { 
   
-  # output$summary <- renderUI({
-  #     str1 <- ("There are many reasons around cartel violence and its effects 
+  # output$summary <- textOutput({
+  #     str1 <- ("There are many reasons around cartel violence and its effects
   #              that result in rises of illegal immigration, particularly in women and children.")
-  #     str2 <- paste("Violence is an intrinsic feature of the trade in illicit drugs. Traffickers use it to settle disputes, 
-  #                                   and a credible threat of violence maintains employee discipline and a semblance of order with suppliers, 
-  #                                   creditors, and buyers. This type of drug trafficking-related violence has occurred routinely and 
+  #     str2 <- paste("Violence is an intrinsic feature of the trade in illicit drugs. Traffickers use it to settle disputes,
+  #                                   and a credible threat of violence maintains employee discipline and a semblance of order with suppliers,
+  #                                   creditors, and buyers. This type of drug trafficking-related violence has occurred routinely and
   #                                   intermittently in U.S. cities since the early 1980s.")
-  #     str3 <- paste("The violence now associated with drug trafficking 
-  #                                   organizations (DTOs) in Mexico is of an entirely different scale. In Mexico, the violence is not only 
-  #                                   associated with resolving disputes or maintaining discipline but also has been directed toward the 
-  #                                   government, political candidates, and the media. The excesses of some of 
+  #     str3 <- paste("The violence now associated with drug trafficking
+  #                                   organizations (DTOs) in Mexico is of an entirely different scale. In Mexico, the violence is not only
+  #                                   associated with resolving disputes or maintaining discipline but also has been directed toward the
+  #                                   government, political candidates, and the media. The excesses of some of
   #                                   Mexican cartels' displays of violence through abductions, tortures, and executions are considered exceptional by the typical standards of organized crime.")
-  #     str4 <- paste("Overall, the Latin America region has a significantly higher homicide levels than 
-  #                                 other regions worldwide. According to the U.N.’s Global Study on Homicide 
-  #                                 published in July 2019, with 13% of the world’s population in 2017, Latin America 
+  #     str4 <- paste("Overall, the Latin America region has a significantly higher homicide levels than
+  #                                 other regions worldwide. According to the U.N.’s Global Study on Homicide
+  #                                 published in July 2019, with 13% of the world’s population in 2017, Latin America
   #                                 had 37% of the world’s intentional homicides.")
   #     str5 <- ("Data Sources")
-  #     str6 <- paste("Kaplan, Jacob. U.S. Customs and Border Protection Statistics and Summaries. Ann Arbor, MI: 
-  #                                 Inter-university Consortium for Political and Social Research distributor, 2019-04-30. 
-  #                                 https://doi.org/10.3886/E109522V2 Kaplan, Jacob. U.S. Customs and Border Protection Statistics 
-  #                                   and Summaries: family_child_total_monthly_2000_2018.zip. Ann Arbor, MI: Inter-university Consortium 
+  #     str6 <- paste("Kaplan, Jacob. U.S. Customs and Border Protection Statistics and Summaries. Ann Arbor, MI:
+  #                                 Inter-university Consortium for Political and Social Research distributor, 2019-04-30.
+  #                                 https://doi.org/10.3886/E109522V2 Kaplan, Jacob. U.S. Customs and Border Protection Statistics
+  #                                   and Summaries: family_child_total_monthly_2000_2018.zip. Ann Arbor, MI: Inter-university Consortium
   #                                   for Political and Social Research distributor, 2019-04-30. https://doi.org/10.3886/E109522V2-19923")
   #     str7 <- paste("INEGI, Mexican government agency that performs surveys")
   #     str8 <- paste("ok")
@@ -217,10 +227,10 @@ server <- function(input, output) {
   #     str11 <- paste("test")
   #     str12 <- paste("test")
   #     str13 <- paste("Source: test")
-  #     
+  # 
   #     HTML(paste(h1(str1), p(str2), p(str3), p(str4), p(str5), p(str6), p(str7), p(str8), p(str9), p(str10), p(str11), p(str12), h6(str13)))
   # })
-  
+  # 
   # ------------------------------------------------- #
   #### OUTPUT FOR MAP ####
   
@@ -257,12 +267,20 @@ server <- function(input, output) {
       map_cartel_data_1 <- crimes %>%
         filter(tipo == "SECUESTRO") }
     
-    # for more options: another else if
+    # for more options, just insert another else if above
+    # 
+    # 
+    # if(map_cartel_data_1$count == 0) {
+    #   map_cartel_data_1 <- crimes %>%
+    #     mutate(count == sum(map_cartel_data_1$count, 1)) }
+    
     map_cartel_data_1 <- map_cartel_data_1 %>%
+      mutate(date = substr(date, 1, 4)) %>%
       group_by(state_code, state, date) %>%
+      # ifelse argument needs 3 arguments, test, truth value, false value
+      mutate(count = ifelse(count == 0, 10, count)) %>%
       summarise(total = sum(count, na.rm = TRUE)) %>%
       arrange(state_code, state, date) %>%
-      mutate(date = substr(date, 1, 4)) %>%
       # made the date just the year...
       group_by(state_code, date) %>%
       # group_by again with new date
@@ -300,7 +318,8 @@ server <- function(input, output) {
                                y = ~percent, 
                                type = 'scatter', 
                                mode = 'lines', 
-                               text = "Percentage of citizens over 18 who feel unsafe in their state and country")
+                               text = "Percentage of citizens over 
+                               18 who feel unsafe in their state and country")
     
     
     ggplotly(plot_perception)
@@ -324,43 +343,101 @@ server <- function(input, output) {
     
     plot_bp <-
       plot_ly(bp_fc, x = ~fiscal_year, y = ~apprehensions,
-              name = 'Border Patrol apprehensions', type = 'scatter', mode = 'lines')
+              name = 'Border Patrol Apprehensions Along the Southwest Border', type = 'scatter', mode = 'lines', sep="",
+              xlab = 'Year', ylab = 'Number of apprehensions')
     
     ggplotly(plot_bp)
     
   })
+  
+  
+  
+  # ---------------------------------------------------- #           
+  #### OUTPUT FOR REGRESSION TAB ####
+  
+  
+  # QUESTION I WANT TO ANSWER:
+  # how accurate are perceptions and consequently,
+  # what is effect on attempts to leave, based on crime #s over the years? 
+  
+  
+  # x = dependent variable = TARGET = perception
+  # y = independent variables = PREDICTORS = crime
+  
+  
+  # scratch disregard this bit
+  # x_1 <- perception %>%
+  #   filter(state == "Estados Unidos Mexicanos") %>%
+  #   # the crisis has been historically concentrated in border states...
+  #   # these are states with high insecurity perception rates.
+  #   filter(year >= 2010) %>%
+  #   select(percent)
+  
+  x_1 <- bp_fc %>%
+    filter(month == "yearly total") %>%
+    filter(sector == "southwest border") %>%
+    filter(fiscal_year >= 2010) %>%
+    select(total_apprehensions, unaccompanied_child_apprehension)
+  
+  y_1 <- crimes %>%
+    filter(subtipo %in% c("HOMICIDIO DOLOSO")) %>%
+    mutate(date = substr(date, 1, 4)) %>%
+    group_by(state_code, state, date) %>%
+    # ifelse argument needs 3 arguments, test, truth value, false value
+    mutate(count = ifelse(count == 0, 10, count)) %>%
+    summarise(total = sum(count, na.rm = TRUE)) %>%
+    arrange(state_code, state, date) %>%
+    # made the date just the year...
+    group_by(state_code, date) %>%
+    # group_by again with new date
+    mutate(newtotal = sum(total)) %>%
+    # make new values
+    select(- total) %>%
+    unique() %>%
+    ungroup() %>%
+    # changing column names to necessary ones for mxmaps package
+    mutate(region = state_code) %>%
+    mutate(value = newtotal) %>%
+    select(- newtotal, - state_code, - region, - state) %>%
+    head(9)
+  
+  x_1 <- data.frame(words = unlist(words))
+  y_1 <- data.frame(words = unlist(words))
+  
+  
+  reg_perception <- data.frame(x_1, y_1)
+  
+  
+  output$plot_regression <- renderPlot({
+    # making a very simple regression model
+    
+    ggplot(reg, aes(x=x_1$total_apprehensions, y=y_1$value)) +
+      geom_point(shape=1) +    
+      geom_smooth(method=lm, color ="brown4", fill = "deepskyblue4") +
+      xlab("Border Patrol Apprehensions Along the Southern Border") +
+      ylab("Numbers of Violent, High-Profile Crimes") + 
+      labs(title = "Relationship Between Violent, High-Profile Crimes in Mexico
+  and Perceptions of Danger", 
+           subtitle = "There are numerous reasons that Mexicans' perceptions
+              of danger become warped; high-profile, grisly fear tactics/crimes
+              used by cartels, along with the gagging of the press, has 
+              colored the public's perception in different ways over the years",
+           caption = "Statistical regression analysis, data from 
+              INEGI government census surveys, the
+              Mexican Justice System, and U.S. CBP")
+    
+  })
+  
+  # below is final bracket for whole output
 }
 
+# ------------------------------------------------- #
 
-# ------------------------------------------------- #           
-#### OUTPUT FOR REGRESSION TAB ####
-# 
-# set.seed(955)
-# 
-# bp_fc_regression <- bp_fc %>%
-#   filter(month == "yearly total") %>%
-#   filter(sector == "southwest border") %>%
-#   select(unaccompanied_child_apprehension)
-# 
-# data_regression <- data.frame(year = unique(bp_fc$fiscal_year), 
-#                               x = bp_fc_regression,
-#                               y = homicides)
-# 
-# plot_regression <- ggplot(data_regression, aes(x=xvar, y=yvar)) +
-#   geom_point(shape=1) +    # Use hollow circles
-#   geom_smooth(method=lm)   # Add linear regression line
-# 
-# 
-# plot_regression <- ggplotly(plot_regression)
-
-
+#### RUNNING APP ####
+## Run the application...im scared im scared...this is really the existence i live
+## maybe it works maybe it doesn't only god and preceptor could guess ....
+# i am feeling existential now
 
 # ------------------------------------------------- #
-#### RUNNING APP ####
-###########################################################################
-## Run the application...im scared im scared...this is really the existence i live
-##    maybe it works maybe it doesn't only god and preceptor could guess .... ##
-# i am feeling existential now
-###########################################################################
 
 shinyApp(ui = ui, server = server)
