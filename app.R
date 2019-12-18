@@ -70,12 +70,12 @@ bp_fc <- bp_fc %>%
 
 # images from a static, public google drive
 dir_create("graphics")
+# 
+# download.file("http://drive.google.com/file/d/1d5beiQii7VfYri15w2CJNRPLlS27oyVb/view?usp=sharing", 
+#               destfile = "./graphics/profile.JPG")
 
-download.file("http://drive.google.com/file/d/1d5beiQii7VfYri15w2CJNRPLlS27oyVb/view?usp=sharing", 
-              destfile = "./graphics/profile.JPG")
-
-download.file("http://drive.google.com/file/d/1kh84LPvwTyXXoToMwNqVQEXii7dR57__/view?usp=sharing", 
-              destfile = "./graphics/joseluis.JPG")
+# download.file("http://drive.google.com/file/d/1kh84LPvwTyXXoToMwNqVQEXii7dR57__/view?usp=sharing", 
+#               destfile = "./graphics/joseluis.JPG")
 
 # ------------------------------------------------- #
 
