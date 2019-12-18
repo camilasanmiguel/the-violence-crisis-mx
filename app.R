@@ -68,6 +68,17 @@ bp_fc <- bp_fc %>%
   filter(fiscal_year %in% c('2014', '2015', '2016', '2017', '2018'))
 # ------------------------------------------------- #
 
+# images from a static, public google drive
+dir_create("graphics")
+
+download.file("http://drive.google.com/file/d/1d5beiQii7VfYri15w2CJNRPLlS27oyVb/view?usp=sharing", 
+              destfile = "./graphics/profile.JPG")
+
+download.file("http://drive.google.com/file/d/1kh84LPvwTyXXoToMwNqVQEXii7dR57__/view?usp=sharing", 
+              destfile = "./graphics/joseluis.JPG")
+
+# ------------------------------------------------- #
+
 #### MY UI ####
 ui <- navbarPage(
   title = "The Cartel Violence Crisis 
@@ -105,7 +116,8 @@ ui <- navbarPage(
                tabsetPanel(
                  tabPanel(
                    title = "Map of Violence Over Time",
-                   plotOutput("map1")))
+                   plotOutput("map1"))),
+               h5("EXPLAIN"),
                
              )
            )
@@ -113,7 +125,7 @@ ui <- navbarPage(
   # ------------------------------------------------- #
   #### second tab (perceptions of insecurity) ####
   tabPanel(
-    title = "Percentage of Mexican citizens over 18 who feel unsafe in their state",
+    title = "Public Perceptions of Insecurity in Mexico",
     sidebarLayout(
       sidebarPanel(
         selectInput("state", "Choose a state",
@@ -126,13 +138,16 @@ ui <- navbarPage(
                                 "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", 
                                 "Tamaulipas", "Tlaxcala", "Veracruz de Ignacio de la Llave", 
                                 "Yucatán", "Zacatecas"),
-                    selected = "Ciudad de México")),
+                    selected = "Ciudad de México"),
+        h5("Public Perceptions of Insecurity in Mexico. Data from INEGI.")),
       mainPanel(
         h2("Public Perceptions of Insecurity in Mexico"),
         h5("Over time, the drug war and its effects have brought the vast majority of Mexicans, 
         especially those living in border states most affected by high-profile crimes, to 
            feel unsafe."),
-        plotlyOutput("plot_perception")),
+        plotlyOutput("plot_perception"),
+        h5("This plot displays the percentage of Mexican 
+           citizens over 18 who feel unsafe in their state as surveyed each year.",))
       
     )
     # above parentheses closes sidebar layout
@@ -179,9 +194,9 @@ ui <- navbarPage(
   
   tabPanel("About",
            h3(a("Camila Sanmiguel Anaya", href="https://www.camilasanmiguel.com")),
-           h5("I am a Harvard undergraduate studying
-                            History & Literature, passionate about data science
-                            and Latin America."),
+           h5("I am a student at Harvard graduating in 2022 and studying
+                            History & Literature, captivated with data science
+                            and Latin American law and history."),
            imageOutput("profile", width = "100%", height = "100%"),
            h5("Contact me at camilasanmiguel@college.harvard.edu or find me on my website", 
               a("here.", href="https://www.camilasanmiguel.com")),
@@ -195,17 +210,33 @@ ui <- navbarPage(
            mainPanel(
              h2("References"),
              h4("Data Sources"),
+             h6("“Encuesta Nacional de Victimización y Percepción Sobre Seguridad Pública (ENVIPE) 2019.” Accessed December 15, 2019. https://www.inegi.org.mx/programas/envipe/2019/default.html#Tabulados."),
              h6("Kaplan, Jacob. U.S. Customs and Border Protection Statistics and Summaries. Ann Arbor, MI:
                                    Inter-university Consortium for Political and Social Research distributor, 2019-04-30.
                                    https://doi.org/10.3886/E109522V2 Kaplan, Jacob. U.S. Customs and Border Protection Statistics
                                    and Summaries: family_child_total_monthly_2000_2018.zip. Ann Arbor, MI: Inter-university Consortium
                                    for Political and Social Research distributor, 2019-04-30. https://doi.org/10.3886/E109522V2-19923"),
-             h6("1"),
-             h6("2"),
-             h6("3"),
-             h6("4")
+             h4("Research and News"),
+             h6("Ahmed, Azam. “In Mexico, ‘It’s Easy to Kill a Journalist.’” The New York Times, April 29, 2017, sec. World. https://www.nytimes.com/2017/04/29/world/americas/veracruz-mexico-reporters-killed.html."),
+             h6("Ahmed, Azam. “Mexico’s Deadliest Town. Mexico’s Deadliest Year.” The New York Times, August 4, 2017, sec. World. https://www.nytimes.com/2017/08/04/world/americas/mexicos-drug-killings.html."),
+             h6("Beittel, June S. “Mexico: Organized Crime and Drug Trafficking Organizations,” n.d., 35.
+“Criminal Violence in Mexico.” Global Conflict Tracker. Accessed December 18, 2019. https://cfr.org/interactive/global-conflict-tracker/conflict/criminal-violence-mexico."),
+             h6("Dalby, Chris. “Why Are More People Being Killed in Mexico in 2019?” InSight Crime(blog), August 8, 2019. 
+                            https://www.insightcrime.org/news/analysis/why-are-more-mexicans-being-killed-2019/."),
+             h6("Fisher, Max, and Amanda Taub. “Mexico’s Record Violence Is a Crisis 20 Years in the Making.” The New York Times, October 28, 2017, sec. World. https://www.nytimes.com/2017/10/28/world/americas/mexico-violence.html."),
+             h6("“In Mexico, Violence Flares Up Again in the Border City of Nuevo Laredo.” Stratfor. Accessed December 15, 2019. https://worldview.stratfor.com/article/mexico-violence-flares-border-city-nuevo-laredo-cdn."),
+             h6("Martin, Laura. “Research Guides: Mexico’s Mass Disappearances and the Drug War (Ayotzinapa: The Missing 43 Students): Drug War Timeline 1930-2015.” Accessed December 18, 2019. https://researchguides.library.wisc.edu/c.php?g=560513&p=3904772."),
+             h6("Mosqueda, Priscila. “Mexican Drug Cartels Are Using Social Media Apps to Commit Virtual Kidnappings.” Vice(blog), September 17, 2014. https://www.vice.com/en_us/article/jmbkek/mexican-cartels-are-using-social-media-apps-to-commit-virtual-kidnappings-917."),
+             h6("Villegas, Paulina. “As Violence Soared in Mexico, This Town Bucked the Trend.” The New York Times, September 1, 2018, sec. World. https://www.nytimes.com/2018/09/01/world/americas/mexico-violence-police.html."),
+             h6("“‘We’re Going to Find You.’ Mexican Cartels Turn Social Media into Tools for Extortion, Threats and Violence.” Accessed December 15, 2019. https://www.desertsun.com/in-depth/news/2019/02/27/mexican-drug-cartels-use-social-media-for-extortion-threats-violence-facebook-whatsapp-youtube/2280756002/."),
+             h6("Woody, Christopher. “Mexico’s Rising Violence and a Showdown between Cartels Are Driving a Grisly Trend in the Country’s 2nd-Biggest City.” Business Insider. Accessed December 15, 2019. https://www.businessinsider.com/cartels-violence-driving-homicides-disappearances-in-guadalajara-2019-9.")
              
-           ))
+             
+           )),
+  tabPanel("Info PDF",
+           HTML('<iframe src=\"https://drive.google.com/file/d/1mVFFlJ8cQlSHHEbZ6s_mrYX1lxflWbGx/preview\" 
+                         width=\"900\" height=\"600\"></iframe>')
+  )
   
   
   # this final parentheses is the navbar closing
@@ -305,8 +336,10 @@ server <- function(input, output) {
                                y = ~percent, 
                                type = 'scatter', 
                                mode = 'lines', 
-                               text = "Percentage of citizens over 
-                               18 who feel unsafe in their state and country")
+                               text = "Percentage of Mexican citizens over 18 who feel unsafe in their state",
+                               xaxis_title = "Year",
+                               yaxis_title = "Percent of citizens who feel unsafe"
+    )
     
     
     ggplotly(plot_perception)
@@ -388,6 +421,7 @@ server <- function(input, output) {
     select(- newtotal, - state_code, - region, - state) %>%
     head(9)
   
+  # the below is necessary or else it just doesn't work 
   x_1 <- data.frame(words = unlist(words))
   y_1 <- data.frame(words = unlist(words))
   
@@ -398,20 +432,25 @@ server <- function(input, output) {
   output$plot_regression <- renderPlot({
     # making a very simple regression model
     
-    ggplot(reg, aes(x=x_1$total_apprehensions, y=y_1$value)) +
+    ggplot(reg_perception, aes(x = x_1$total_apprehensions, y= y_1$value)) +
       geom_point(shape=1) +    
-      geom_smooth(method=lm, color ="brown4", fill = "deepskyblue4") +
-      xlab("Border Patrol Apprehensions Along the Southern Border") +
-      ylab("Numbers of Violent, High-Profile Crimes") + 
+      geom_smooth(x = x_1$total_apprehensions, y= y_1$value, 
+                  method=lm, se=FALSE,
+                  color ="brown4", fill = "deepskyblue4") +
       labs(title = "Relationship Between Violent, High-Profile Crimes in Mexico
-  and Perceptions of Danger", 
+         and Perceptions of Danger",
            subtitle = "There are numerous reasons that Mexicans' perceptions
-              of danger become warped; high-profile, grisly fear tactics/crimes
-              used by cartels, along with the gagging of the press, has 
-              colored the public's perception in different ways over the years",
-           caption = "Statistical regression analysis, data from 
-              INEGI government census surveys, the
-              Mexican Justice System, and U.S. CBP")
+              of danger can grow disproportionately to the growth of actual crime; 
+              high-profile, grisly fear tactics/crimes
+              used by cartels, along with the gagging of the press, has
+              colored the public's perception in different ways over the years.",
+           x = "Border Patrol Apprehensions Along the Southern Border",
+           y = "Numbers of Violent, High-Profile Crimes",
+           caption = "Statistical regression analysis, data from
+         INEGI government census surveys, the
+         Mexican Justice System, and U.S. CBP")
+    
+    
     
   })
   
@@ -423,14 +462,15 @@ server <- function(input, output) {
   output$profile <- renderImage({
     # Return a list containing the filename and alt text
     list(src = './graphics/profile.JPG',
-         height = 200)
-  }
+         height = 300,
+         style="display: block; margin-left: auto; margin-right: auto;")
+  }, deleteFile = FALSE
   )
   
   output$joseluis <- renderImage({
     list(src = './graphics/joseluis.JPG',
-         height = 100,
-         width = 80)
+         height = 250,
+         style="display: block; margin-left: auto; margin-right: auto;")
   }
   )
   
