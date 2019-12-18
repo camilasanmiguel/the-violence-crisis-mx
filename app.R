@@ -178,15 +178,34 @@ ui <- navbarPage(
   #### fifth tab (about) ####
   
   tabPanel("About",
-           h3("Camila Sanmiguel"),
+           h3(a("Camila Sanmiguel Anaya", href="https://www.camilasanmiguel.com")),
            h5("I am a Harvard undergraduate studying
                             History & Literature, passionate about data science
                             and Latin America."),
+           imageOutput("profile", width = "100%", height = "100%"),
            h5("Contact me at camilasanmiguel@college.harvard.edu or find me on my website", 
               a("here.", href="https://www.camilasanmiguel.com")),
            h5("Find me on LinkedIn",
-              a("here.", href="https://www.linkedin.com/u/camilasanmiguel"))
-  )
+              a("here.", href="https://www.linkedin.com/u/camilasanmiguel")),
+           h6("This project is a tribute to Jose Luis Anaya."),
+           imageOutput("joseluis", width = "100%", height = "100%")
+  ),
+  
+  tabPanel("References",
+           mainPanel(
+             h2("References"),
+             h4("Data Sources"),
+             h6("Kaplan, Jacob. U.S. Customs and Border Protection Statistics and Summaries. Ann Arbor, MI:
+                                   Inter-university Consortium for Political and Social Research distributor, 2019-04-30.
+                                   https://doi.org/10.3886/E109522V2 Kaplan, Jacob. U.S. Customs and Border Protection Statistics
+                                   and Summaries: family_child_total_monthly_2000_2018.zip. Ann Arbor, MI: Inter-university Consortium
+                                   for Political and Social Research distributor, 2019-04-30. https://doi.org/10.3886/E109522V2-19923"),
+             h6("1"),
+             h6("2"),
+             h6("3"),
+             h6("4")
+             
+           ))
   
   
   # this final parentheses is the navbar closing
@@ -198,40 +217,8 @@ ui <- navbarPage(
 
 server <- function(input, output) { 
   
-  # output$summary <- textOutput({
-  #     str1 <- ("There are many reasons around cartel violence and its effects
-  #              that result in rises of illegal immigration, particularly in women and children.")
-  #     str2 <- paste("Violence is an intrinsic feature of the trade in illicit drugs. Traffickers use it to settle disputes,
-  #                                   and a credible threat of violence maintains employee discipline and a semblance of order with suppliers,
-  #                                   creditors, and buyers. This type of drug trafficking-related violence has occurred routinely and
-  #                                   intermittently in U.S. cities since the early 1980s.")
-  #     str3 <- paste("The violence now associated with drug trafficking
-  #                                   organizations (DTOs) in Mexico is of an entirely different scale. In Mexico, the violence is not only
-  #                                   associated with resolving disputes or maintaining discipline but also has been directed toward the
-  #                                   government, political candidates, and the media. The excesses of some of
-  #                                   Mexican cartels' displays of violence through abductions, tortures, and executions are considered exceptional by the typical standards of organized crime.")
-  #     str4 <- paste("Overall, the Latin America region has a significantly higher homicide levels than
-  #                                 other regions worldwide. According to the U.N.’s Global Study on Homicide
-  #                                 published in July 2019, with 13% of the world’s population in 2017, Latin America
-  #                                 had 37% of the world’s intentional homicides.")
-  #     str5 <- ("Data Sources")
-  #     str6 <- paste("Kaplan, Jacob. U.S. Customs and Border Protection Statistics and Summaries. Ann Arbor, MI:
-  #                                 Inter-university Consortium for Political and Social Research distributor, 2019-04-30.
-  #                                 https://doi.org/10.3886/E109522V2 Kaplan, Jacob. U.S. Customs and Border Protection Statistics
-  #                                   and Summaries: family_child_total_monthly_2000_2018.zip. Ann Arbor, MI: Inter-university Consortium
-  #                                   for Political and Social Research distributor, 2019-04-30. https://doi.org/10.3886/E109522V2-19923")
-  #     str7 <- paste("INEGI, Mexican government agency that performs surveys")
-  #     str8 <- paste("ok")
-  #     str9 <- paste("ok")
-  #     str10 <- paste("ok")
-  #     str11 <- paste("test")
-  #     str12 <- paste("test")
-  #     str13 <- paste("Source: test")
-  # 
-  #     HTML(paste(h1(str1), p(str2), p(str3), p(str4), p(str5), p(str6), p(str7), p(str8), p(str9), p(str10), p(str11), p(str12), h6(str13)))
-  # })
-  # 
   # ------------------------------------------------- #
+  
   #### OUTPUT FOR MAP ####
   
   output$map1 <- renderPlot({
@@ -427,6 +414,27 @@ server <- function(input, output) {
               Mexican Justice System, and U.S. CBP")
     
   })
+  
+  
+  
+  # ------------------------------------------------- #
+  #### OUTPUT FOR IMAGES ####
+  
+  output$profile <- renderImage({
+    # Return a list containing the filename and alt text
+    list(src = './graphics/profile.JPG',
+         height = 200)
+  }
+  )
+  
+  output$joseluis <- renderImage({
+    list(src = './graphics/joseluis.JPG',
+         height = 100,
+         width = 80)
+  }
+  )
+  
+  # ------------------------------------------------- #
   
   # below is final bracket for whole output
 }
