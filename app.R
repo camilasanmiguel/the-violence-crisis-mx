@@ -468,8 +468,8 @@ server <- function(input, output) {
   )
   
   output$joseluis <- renderImage({
-    list(src = './graphics/joseluis.JPG',
-         height = 250,
+    list(src = './graphics/joseluis.jpg',
+         height = 300,
          style="display: block; margin-left: auto; margin-right: auto;")
   }
   )
