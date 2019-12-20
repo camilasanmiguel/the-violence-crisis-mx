@@ -117,7 +117,31 @@ ui <- navbarPage(
                  tabPanel(
                    title = "Map of Violence Over Time",
                    plotOutput("map1"))),
-               h5("EXPLAIN"),
+               h5("Mexico is suspended in a blood bath that has spanned the last two decades, perpetuated by
+organized crime, infiltrating the police and the press, and terrorizing Mexican citizens. Most commonly
+characterized by violent crimes including executions, abductions and disappearances of hostages, human
+trafficking, and torture; drug trafficking organizations (DTOs) have plagued the country and maintained a
+great level of control over the police and the press for a combative period spanning over the last twenty
+years."),
+h5("Grisly public displays of torture are one of the hallmarks of DTOs, with Mexico’s intentional
+homicide rate setting new records each year, with widely-publicized beheadings, public hangings of
+corpses, car bombs, and murders of journalists and public officials, often with messages attached.
+The press has been notably gagged, many times targeted by cartels in similar grisly public
+displays of torture."),
+h5("The institutions of law enforcement and of the press are similarly characterized by severe human
+rights violations, many times corrupt or otherwise compromised. The 2014 disappearance of 43 students,
+attacked by police officers that were connected to a cartel, is one example of a trauma that deeply
+mangled the public’s perception of law enforcement and safety."),
+               h5("The gagging of the press has made it difficult to track exactly why perceptions of danger
+fluctuate so much; a large part of crime committed by DTOs goes unreported.
+The most commonly-accepted assumption among different analysts maintains that up to 50% of
+total intentional homicides in Mexico are connected to organized crime, with the violence reaching a new
+scale as DTOs direct their efforts further than simply disputing or disciplining, but also towards the
+government, the media, and politicians."),
+h5("The shifts on the choropleth map visualizing the spikes and falls in homicides, abductions, and other
+violent crimes allow us to track the movement of the Mexican drug war over time. For instance, the state
+with the highest murder rate in 2019, Guanajuato (see heat map) was precisely where two massive drug
+cartels, Jalisco New Generation and Santa Rosa de Lima, have been combatting for control since 2016."),
                
              )
            )
@@ -147,7 +171,40 @@ ui <- navbarPage(
            feel unsafe."),
         plotlyOutput("plot_perception"),
         h5("This plot displays the percentage of Mexican 
-           citizens over 18 who feel unsafe in their state as surveyed each year.",))
+           citizens over 18 who feel unsafe in their state as surveyed each year.
+           This graph showcases the stark
+differences between the most problematic states, like border states such as Tamaulipas and Sonora, and
+less problematic states in undisputed territories. It also showcases the very marked spikes and drops in
+public perceptions of danger across a majority of states, enabling us to pinpoint years like 2012 (a change
+in administration) as specific points in time when citizens felt hopeful for the regime change and
+consequently felt more confident in their safety.",),
+        h5("The public perception of crime in Mexico is a difficult thing to study; according to the National
+Institute of Statistics and Geography, 92 percent of crimes go unreported in Mexico, largely due to the
+time-consuming, potentially dangerous, and deterrent requirements for filing a criminal complaint.
+These crimes are also strategically orchestrated to be especially grisly and merciless and public, in order
+to stoke fear and send messages to politicians or journalists. Furthermore, the communication of these
+crimes is largely tied to social media including Whatsapp, which has such large influences in Latin
+America that it can even sway elections."),
+h5("In the deadliest year yet for Mexico according to the National Public Security System, we can
+look back and try to identify why 17,608 people were murdered in Mexico in just the first six months.9
+Why has the murder rate tripled since 2007, the beginning of Calderon’s presidency? Analysts cite the
+rate of political turnover in various levels of government, as well as the factionalism of splintered cartels
+as DTOs expand into other criminal ventures and strengthen their hold over the government.
+Combined with the particular social landscape in Mexico -- the problem of massive inequality
+and an inefficient governing body, which have aided corruption and driven recruits to cartels -- the
+country has little infrastructure to enforce laws to begin with. A low tax rate (18.4 percent) and low
+minimum wage (80 pesos, or $4.17, a day) translates into poorly-paid and very easily corruptible law
+enforcement."),
+h5("When studying this, it can be useful to look at towns such as Morelia, Michoacan, a state that is
+similarly a hotbed for cartel violence -- this city has been profiled for its mystifying ability to remain
+remarkably peaceful and only improving while in the center of bitterly contested land. Upon questioning
+the police force of the town, which is largely made up of civilians, the New York Times found that the
+“broken windows” strategy of cracking down on lower-level neighborhood crimes was effective,
+introducing new civil courts for misdemeanors. Overhauling their local police force and subsidizing changes within the city are, however, claimed to be
+unreproducible by experts who highlight the forces riddled with problems already co-opted by drug
+gangs, and the impossibility of reform. Experts speculate that the only path towards reform begins with
+first creating social stability."),
+        )
       
     )
     # above parentheses closes sidebar layout
@@ -202,6 +259,10 @@ ui <- navbarPage(
               a("here.", href="https://www.camilasanmiguel.com")),
            h5("Find me on LinkedIn",
               a("here.", href="https://www.linkedin.com/u/camilasanmiguel")),
+           h6("These numbers are easy to treat coldly. It is important to remember their magnitude; that there are real
+humans and families behind all the violence and the cosmos of different perceptions, and that there is a
+country of millions in desperate need of drastic political aid and reform from the outside as well as the
+inside."),
            h6("This project is a tribute to Jose Luis Anaya."),
            imageOutput("joseluis", width = "100%", height = "100%")
   ),
