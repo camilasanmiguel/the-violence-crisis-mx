@@ -3,6 +3,8 @@ This project compares data on violent crimes and the population's perception of 
 Additionally, there are visualizations of Border Patrol apprehensions along the southern border of family units, unaccompanied children, and single adults over time. The goal is not necessarily to find correlation, but just to spot trends. 
 There are many reasons that surround cartel violence and its effects that result in rises of attempts for illegal immigration.
 
+Find the project here: https://camila-sanmiguel.shinyapps.io/the-violence-crisis-mx/ 
+
 ## Repo Guide
 
 1) raw-data folder (contains 3 spreadsheets)
